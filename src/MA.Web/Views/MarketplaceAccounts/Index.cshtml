@@ -1,0 +1,33 @@
+@model List<MA.Core.Entities.MarketplaceAccount>
+@{ ViewData["Title"] = "Marketplace Accounts"; }
+
+<div class="d-flex justify-content-between mb-3">
+    <h2>Marketplace Accounts</h2>
+    <a asp-action="Create" class="btn btn-primary">+ Add Account</a>
+</div>
+
+<div class="alert alert-info">
+    Credentials are encrypted via ASP.NET Data Protection before being stored.
+    Keys live in <code>App_Data/keys</code> &mdash; back this folder up alongside your database, otherwise stored credentials become unreadable.
+</div>
+
+<table class="table">
+    <thead><tr><th>Marketplace</th><th>Display Name</th><th>Seller Id</th><th>Active</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var a in Model)
+        {
+            <tr>
+                <td><span class="badge bg-secondary">@a.Marketplace</span></td>
+                <td>@a.DisplayName</td>
+                <td>@a.SellerId</td>
+                <td>@(a.IsActive ? "Yes" : "No")</td>
+                <td>
+                    <form asp-action="Delete" asp-route-id="@a.AccountId" method="post" class="d-inline" onsubmit="return confirm('Delete account?');">
+                        @Html.AntiForgeryToken()
+                        <button class="btn btn-sm btn-outline-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

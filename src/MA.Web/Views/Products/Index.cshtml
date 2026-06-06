@@ -1,0 +1,40 @@
+@model List<MA.Core.Entities.Product>
+@{ ViewData["Title"] = "Products"; }
+
+<div class="d-flex justify-content-between mb-3">
+    <h2>Products</h2>
+    <div>
+        <a asp-action="BulkUpload" class="btn btn-outline-secondary">Bulk Upload CSV</a>
+        <a asp-action="Create" class="btn btn-primary">+ Add Product</a>
+    </div>
+</div>
+
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input name="search" value="@ViewBag.Search" class="form-control" placeholder="Search SKU or title..." />
+    </div>
+    <div class="col-md-auto"><button class="btn btn-secondary">Search</button></div>
+</form>
+
+<table class="table table-hover">
+    <thead><tr><th>SKU</th><th>Title</th><th>Brand</th><th>Category</th><th>MRP</th><th>Selling</th><th></th></tr></thead>
+    <tbody>
+        @foreach (var p in Model)
+        {
+            <tr>
+                <td><code>@p.SKU</code></td>
+                <td>@p.Title</td>
+                <td>@p.Brand</td>
+                <td>@p.Category</td>
+                <td>₹@p.MRP</td>
+                <td>₹@p.SellingPrice</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@p.ProductId" class="btn btn-sm btn-outline-primary">Edit</a>
+                    <a asp-controller="Mappings" asp-action="Index" asp-route-productId="@p.ProductId" class="btn btn-sm btn-outline-info">Mappings</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p class="text-muted">Total: @ViewBag.Total</p>

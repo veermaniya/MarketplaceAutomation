@@ -1,0 +1,31 @@
+@model List<MA.Core.Dtos.ProductImportResult>
+@{ ViewData["Title"] = "Import Result"; }
+
+<h2>Import Result</h2>
+
+<p>
+    @{
+        var ok = Model.Count(r => r.Success);
+        var bad = Model.Count - ok;
+    }
+    <span class="badge bg-success me-2">@ok succeeded</span>
+    <span class="badge bg-danger">@bad failed</span>
+</p>
+
+<table class="table table-sm">
+    <thead><tr><th>#</th><th>SKU</th><th>Status</th><th>Error</th><th>Product Id</th></tr></thead>
+    <tbody>
+        @foreach (var r in Model)
+        {
+            <tr class="@(r.Success ? "" : "table-danger")">
+                <td>@r.RowNumber</td>
+                <td><code>@r.SKU</code></td>
+                <td>@(r.Success ? "OK" : "FAIL")</td>
+                <td>@r.Error</td>
+                <td>@r.ProductId</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Products</a>

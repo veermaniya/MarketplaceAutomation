@@ -1,0 +1,4 @@
+SKU,Barcode,Title,Description,Brand,Category,MRP,SellingPrice,WeightGrams,HSNCode,GSTPercent,ImageUrls
+TR-TSHIRT-001,8901234500011,Cotton Round Neck T-Shirt - Black M,Premium 100% combed cotton tshirt,TechRhombus,Apparel/Mens/T-Shirts,799.00,499.00,180,61091000,5.00,https://example.com/img/ts-001-1.jpg|https://example.com/img/ts-001-2.jpg
+TR-TSHIRT-002,8901234500028,Cotton Round Neck T-Shirt - Navy L,Premium 100% combed cotton tshirt,TechRhombus,Apparel/Mens/T-Shirts,799.00,499.00,190,61091000,5.00,https://example.com/img/ts-002-1.jpg
+TR-MUG-001,8901234500035,Ceramic Coffee Mug 350ml,Microwave safe ceramic mug,TechRhombus,Home/Kitchen/Mugs,299.00,199.00,320,69120010,18.00,https://example.com/img/mug-001-1.jpg

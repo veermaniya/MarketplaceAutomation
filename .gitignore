@@ -1,0 +1,19 @@
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+
+# Runtime artifacts
+logs/
+screenshots/
+src/MA.Web/App_Data/keys/key-*.xml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Playwright
+**/playwright/.cache/
+**/playwright-report/

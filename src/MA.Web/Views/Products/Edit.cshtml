@@ -1,0 +1,71 @@
+@model ProductFormViewModel
+@{ ViewData["Title"] = Model.ProductId == 0 ? "Add Product" : "Edit Product"; }
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Save" method="post">
+    <input type="hidden" asp-for="ProductId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label asp-for="SKU" class="form-label"></label>
+            <input asp-for="SKU" class="form-control" />
+            <span asp-validation-for="SKU" class="text-danger"></span>
+            <div class="form-text">Globally unique. Section 5 duplicate check runs on save.</div>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Barcode" class="form-label"></label>
+            <input asp-for="Barcode" class="form-control" />
+            <span asp-validation-for="Barcode" class="text-danger"></span>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Brand" class="form-label"></label>
+            <input asp-for="Brand" class="form-control" />
+        </div>
+        <div class="col-12">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="col-12">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        </div>
+        <div class="col-md-4">
+            <label asp-for="Category" class="form-label"></label>
+            <input asp-for="Category" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="MRP" class="form-label"></label>
+            <input asp-for="MRP" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="SellingPrice" class="form-label"></label>
+            <input asp-for="SellingPrice" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="WeightGrams" class="form-label"></label>
+            <input asp-for="WeightGrams" class="form-control" />
+        </div>
+        <div class="col-md-2">
+            <label asp-for="GSTPercent" class="form-label"></label>
+            <input asp-for="GSTPercent" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="HSNCode" class="form-label"></label>
+            <input asp-for="HSNCode" class="form-control" />
+        </div>
+        <div class="col-12">
+            <label asp-for="ImageUrlsCsv" class="form-label">Image URLs (one per line)</label>
+            <textarea asp-for="ImageUrlsCsv" class="form-control" rows="3" placeholder="https://...&#10;https://..."></textarea>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <a asp-action="Index" class="btn btn-link">Cancel</a>
+    </div>
+</form>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

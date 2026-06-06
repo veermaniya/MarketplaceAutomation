@@ -1,0 +1,31 @@
+@using MA.Core.Entities
+@{ ViewData["Title"] = "Dashboard"; var logs = (List<AutomationLog>)ViewBag.RecentLogs; }
+
+<h2>Dashboard</h2>
+
+<div class="row g-3 my-3">
+    <div class="col-md-3"><div class="card text-bg-primary"><div class="card-body"><h6>Products</h6><h2>@ViewBag.ProductCount</h2></div></div></div>
+    <div class="col-md-3"><div class="card text-bg-success"><div class="card-body"><h6>Active Accounts</h6><h2>@ViewBag.AccountCount</h2></div></div></div>
+    <div class="col-md-3"><div class="card text-bg-info"><div class="card-body"><h6>Mappings</h6><h2>@ViewBag.MappingCount</h2></div></div></div>
+    <div class="col-md-3"><div class="card text-bg-warning"><div class="card-body"><h6>Pending Retries</h6><h2>@ViewBag.PendingRetries</h2></div></div></div>
+</div>
+
+<h4 class="mt-4">Recent Automation Activity</h4>
+<table class="table table-sm table-striped">
+    <thead><tr><th>When</th><th>Market</th><th>Action</th><th>Status</th><th>Message</th><th>Ms</th></tr></thead>
+    <tbody>
+        @foreach (var log in logs)
+        {
+            <tr>
+                <td>@log.OccurredOn.ToLocalTime():g</td>
+                <td>@log.Marketplace</td>
+                <td>@log.Action</td>
+                <td>
+                    <span class="badge @(log.Status == "Success" ? "bg-success" : log.Status == "Failed" ? "bg-danger" : "bg-secondary")">@log.Status</span>
+                </td>
+                <td class="small">@log.Message</td>
+                <td>@log.DurationMs</td>
+            </tr>
+        }
+    </tbody>
+</table>

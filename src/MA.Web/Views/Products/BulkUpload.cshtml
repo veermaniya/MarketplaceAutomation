@@ -1,0 +1,23 @@
+@{ ViewData["Title"] = "Bulk Upload"; }
+
+<h2>Bulk Upload Products (CSV)</h2>
+
+<p class="text-muted">
+    Expected CSV columns:
+    <code>SKU, Barcode, Title, Description, Brand, Category, MRP, SellingPrice, WeightGrams, HSNCode, GSTPercent, ImageUrls</code><br/>
+    <code>ImageUrls</code> can be a semicolon or pipe-separated list within the cell.
+</p>
+
+<form asp-action="BulkUpload" method="post" enctype="multipart/form-data" class="mb-3">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row g-2 align-items-end">
+        <div class="col-md-6">
+            <input type="file" name="file" accept=".csv" class="form-control" required />
+        </div>
+        <div class="col-md-auto">
+            <button class="btn btn-primary">Upload &amp; Import</button>
+        </div>
+    </div>
+</form>
+
+<a href="~/sample-products.csv" class="btn btn-sm btn-outline-secondary">Download sample CSV</a>

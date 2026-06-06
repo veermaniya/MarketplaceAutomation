@@ -1,0 +1,108 @@
+@using MA.Core.Entities
+@model List<MarketplaceMapping>
+@{
+    var product = (Product)ViewBag.Product;
+    var accounts = (List<MarketplaceAccount>)ViewBag.Accounts;
+    ViewData["Title"] = "Mappings - " + product.Title;
+}
+
+<div class="d-flex justify-content-between mb-3">
+    <div>
+        <h2 class="mb-0">@product.Title</h2>
+        <p class="text-muted mb-0"><code>@product.SKU</code> &middot; ₹@product.SellingPrice</p>
+    </div>
+    <a asp-controller="Products" asp-action="Index" class="btn btn-link">&larr; Back to Products</a>
+</div>
+
+<h4>Existing Mappings</h4>
+@if (!Model.Any())
+{
+    <p class="text-muted">No marketplace mappings yet. Add one below.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Marketplace</th><th>Account</th><th>External Id</th>
+                <th>Status</th><th>Qty</th><th>Price</th><th>Last Sync</th><th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td><span class="badge bg-secondary">@m.Marketplace</span></td>
+                    <td>@m.Account?.DisplayName</td>
+                    <td><code>@(m.ExternalListingId ?? "—")</code></td>
+                    <td>
+                        <span class="badge @(m.Status == "Listed" ? "bg-success" : m.Status == "Failed" ? "bg-danger" : "bg-secondary")">
+                            @m.Status
+                        </span>
+                        @if (!string.IsNullOrEmpty(m.LastError))
+                        {
+                            <div class="small text-danger" title="@m.LastError">@(m.LastError.Length > 60 ? m.LastError.Substring(0, 60) + "…" : m.LastError)</div>
+                        }
+                    </td>
+                    <td>@(m.Inventory?.AvailableQty ?? 0)</td>
+                    <td>₹@(m.Inventory?.Price ?? 0)</td>
+                    <td class="small">@(m.LastSyncedOn?.ToLocalTime().ToString("g") ?? "—")</td>
+                    <td>
+                        <form asp-action="PushInventory" method="post" class="row g-1 g-form-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="mappingId" value="@m.MappingId" />
+                            <div class="col-auto">
+                                <input name="quantity" type="number" min="0" class="form-control form-control-sm"
+                                       placeholder="Qty" style="width:80px" value="@(m.Inventory?.AvailableQty ?? 0)" required />
+                            </div>
+                            <div class="col-auto">
+                                <input name="price" type="number" step="0.01" min="0" class="form-control form-control-sm"
+                                       placeholder="Price" style="width:100px" value="@(m.Inventory?.Price ?? product.SellingPrice)" required />
+                            </div>
+                            <div class="col-auto">
+                                <button class="btn btn-sm btn-outline-primary">Push</button>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<hr/>
+
+<h4>Add New Mapping</h4>
+@if (!accounts.Any())
+{
+    <div class="alert alert-warning">
+        No marketplace accounts configured.
+        <a asp-controller="MarketplaceAccounts" asp-action="Create">Add an account first.</a>
+    </div>
+}
+else
+{
+    <form asp-action="Create" method="post" class="row g-2 align-items-end">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="productId" value="@product.ProductId" />
+        <div class="col-md-6">
+            <label class="form-label">Marketplace Account</label>
+            <select name="accountId" class="form-select" required>
+                <option value="">-- choose --</option>
+                @foreach (var a in accounts)
+                {
+                    <option value="@a.AccountId">@a.Marketplace — @a.DisplayName</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-auto">
+            <button class="btn btn-primary">Create Mapping &amp; Queue Listing</button>
+        </div>
+        <div class="col-12">
+            <small class="text-muted">
+                Creating a mapping enqueues a Hangfire job to log into the marketplace
+                and create the listing. Watch the dashboard or Hangfire UI for status.
+            </small>
+        </div>
+    </form>
+}
