@@ -139,6 +139,7 @@ public class Order
 
 public class AutomationLog
 {
+    [Key]
     public long LogId { get; set; }
     public int? UserId { get; set; }
     public int? AccountId { get; set; }
